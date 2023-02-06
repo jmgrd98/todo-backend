@@ -1,26 +1,90 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { PrismaService } from './../../database/PrismaService';
 
 @Injectable()
 export class TodosService {
-  create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+
+  constructor(
+    private prisma: PrismaService
+  ) {}
+
+  async create(createTodoDto: CreateTodoDto) {
+   
+    const todoExists = await this.prisma.todo.findFirst({
+      where: {
+        description: createTodoDto.description,
+      },
+    });
+
+    if(todoExists){
+      throw new Error('Todo already exists!')
+    }
+
+    const todo = await this.prisma.todo.create({
+      data: createTodoDto,
+    });
+
+    return todo;
   }
 
   findAll() {
-    return `This action returns all todos`;
+    return this.prisma.todo.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  async findOne(id: string) {
+
+    const todo = await this.prisma.todo.findUnique({
+      where: {
+        id: id,
+      }
+    })
+
+    if(!todo) {
+      throw new Error('Todo already exists!')
+    }
+
+    return todo;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(id: string, updateTodoDto: UpdateTodoDto) {
+
+    const todoExists = await this.prisma.todo.findUnique({
+      where: {
+        id: updateTodoDto.id,
+      }
+    });
+
+    if(!todoExists) {
+      throw new Error('Todo does not exists!');
+    }
+
+    return await this.prisma.todo.update({
+      data: updateTodoDto,
+      where: {
+        id: updateTodoDto.id,
+      }
+    })
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: string) {
+    
+    const todoExists = await this.prisma.todo.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if(!todoExists) {
+      throw new Error('Todo does not exists!');
+    }
+
+    return await this.prisma.todo.delete({
+      where: {
+        id: id,
+      }
+    });
   }
 }

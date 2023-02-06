@@ -1,14 +1,14 @@
-import { IsString } from "class-validator";
-import { IsBoolean, IsNumber } from "class-validator/types/decorator/decorators";
+import { IsString, IsBoolean, IsDate } from "class-validator";
 
 export class CreateTodoDto {
 
-    @IsNumber
-    id: number;
+    @IsString()
+    id: string;
 
-    @IsString
+    @IsString()
     description: string;
 
-    @IsBoolean
+    @IsBoolean()
     completed: boolean;
+
 }

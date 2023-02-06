@@ -1,7 +1,15 @@
+import { IsString, IsBoolean, IsDate } from "class-validator";
+
 export class Todo {
 
-    id:number;
-    description:string;
+    @IsString()
+    id: string;
+
+    @IsString()
+    description: string;
+
+    @IsBoolean()
     completed: boolean;
+
     
 }
