@@ -18,9 +18,9 @@ export class TodosService {
       },
     });
 
-    if(todoExists){
-      throw new Error('Todo already exists!')
-    }
+    // if(todoExists){
+    //   throw new Error('Todo already exists!')
+    // }
 
     const todo = await this.prisma.todo.create({
       data: createTodoDto,
@@ -52,7 +52,7 @@ export class TodosService {
 
     const todoExists = await this.prisma.todo.findUnique({
       where: {
-        id: updateTodoDto.id,
+        id: id,
       }
     });
 
@@ -63,7 +63,7 @@ export class TodosService {
     return await this.prisma.todo.update({
       data: updateTodoDto,
       where: {
-        id: updateTodoDto.id,
+        id: id,
       }
     })
 
