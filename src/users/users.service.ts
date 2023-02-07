@@ -1,26 +1,87 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'database/PrismaService';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  constructor(
+    private prisma: PrismaService
+  ) {}
+
+  async create(createUserDto: CreateUserDto) {
+
+    const userExists = await this.prisma.user.findFirst({
+      where: {
+        name: createUserDto.name,
+      },
+    });
+
+    if(userExists){
+      throw new Error('User already exists!');
+    }
+
+    return this.prisma.user.create({
+      data: createUserDto,
+    });
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      }
+    })
+
+    if(!user) {
+      throw new Error('User already exists!');
+    }
+
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+
+    const userExists = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      }
+    });
+
+    if(!userExists) {
+      throw new Error('Todo does not exists!');
+    }
+
+    return await this.prisma.user.update({
+      data: updateUserDto,
+      where: {
+        id: id,
+      }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+
+    const userExists = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if(!userExists) {
+      throw new Error('User does not exists!');
+    }
+
+    return await this.prisma.user.delete({
+      where: {
+        id: id,
+      }
+    });
   }
 }

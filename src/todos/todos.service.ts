@@ -19,7 +19,7 @@ export class TodosService {
     });
 
     if(todoExists){
-      throw new Error('Todo already exists!')
+      throw new Error('Todo already exists!');
     }
 
     const todo = await this.prisma.todo.create({
@@ -33,7 +33,7 @@ export class TodosService {
     return this.prisma.todo.findMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
 
     const todo = await this.prisma.todo.findUnique({
       where: {
@@ -42,13 +42,13 @@ export class TodosService {
     })
 
     if(!todo) {
-      throw new Error('Todo already exists!')
+      throw new Error('Todo already exists!');
     }
 
     return todo;
   }
 
-  async update(id: string, updateTodoDto: UpdateTodoDto) {
+  async update(id: number, updateTodoDto: UpdateTodoDto) {
 
     const todoExists = await this.prisma.todo.findUnique({
       where: {
@@ -69,7 +69,7 @@ export class TodosService {
 
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     
     const todoExists = await this.prisma.todo.findUnique({
       where: {
