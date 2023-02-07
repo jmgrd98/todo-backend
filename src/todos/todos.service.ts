@@ -41,9 +41,9 @@ export class TodosService {
       }
     })
 
-    if(!todo) {
-      throw new Error('Todo already exists!')
-    }
+    // if(!todo) {
+    //   throw new Error('Todo already exists!')
+    // }
 
     return todo;
   }
@@ -56,9 +56,9 @@ export class TodosService {
       }
     });
 
-    if(!todoExists) {
-      throw new Error('Todo does not exists!');
-    }
+    // if(!todoExists) {
+    //   throw new Error('Todo does not exists!');
+    // }
 
     return await this.prisma.todo.update({
       data: updateTodoDto,
@@ -77,9 +77,9 @@ export class TodosService {
       },
     });
 
-    if(!todoExists) {
-      throw new Error('Todo does not exists!');
-    }
+    // if(!todoExists) {
+    //   throw new Error('Todo does not exists!');
+    // }
 
     return await this.prisma.todo.delete({
       where: {
