@@ -1,4 +1,4 @@
-import { IsString, IsEmail } from "class-validator";
+import { IsString, IsEmail, MinLength, Matches } from "class-validator";
 
 export class User {
 
@@ -9,6 +9,12 @@ export class User {
     email: string;
 
     @IsString()
+    @MinLength(6)
     password: string;
+
+    @IsString()
+    @MinLength(6)
+    @Matches('password')
+    confirmPassword:string;
 
 }
