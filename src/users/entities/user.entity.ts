@@ -14,7 +14,7 @@ export class User {
 
     @IsString()
     @MinLength(6)
-    // @Matches('password')
+    @Matches('password')
     confirmPassword:string;
 
 }

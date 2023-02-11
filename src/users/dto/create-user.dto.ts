@@ -1,5 +1,4 @@
-import { IsString, IsEmail, MinLength, Matches, Validate } from "class-validator";
-import { User } from "../entities/user.entity";
+import { IsString, IsEmail, MinLength, Matches } from "class-validator";
 
 export class CreateUserDto {
 
@@ -13,8 +12,8 @@ export class CreateUserDto {
     @MinLength(6)
     password: string;
 
-    @IsString()
+    /*@IsString()
     @MinLength(6)
-    @Validate(password)
+    @Matches('password')*/
     confirmPassword:string;
 }
