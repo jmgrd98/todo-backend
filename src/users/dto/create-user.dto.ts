@@ -12,8 +12,7 @@ export class CreateUserDto {
     @MinLength(6)
     password: string;
 
-    /*@IsString()
+    @IsString()
     @MinLength(6)
-    @Matches('password')*/
     confirmPassword:string;
 }
