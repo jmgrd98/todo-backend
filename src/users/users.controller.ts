@@ -11,7 +11,7 @@ export class UsersController {
   @Post()
   @UseInterceptors(UsersInterceptor)
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create(createUserDto)
   }
 
   @Get()
